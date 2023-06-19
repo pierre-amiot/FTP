@@ -1,0 +1,58 @@
+Installer un serveur FTP avec SSL/TLS :
+
+Ne pas oublier de faire « service proftpd stop » avant de faire des modifs puis « service proftpd start » une
+fois les modifs finies, ou bien « service proftpd restart » si on n’a pas stoppé le serveur.
+Bien entendu, toutes les lignes de fichier modifiées dans ce tuto doivent être dé commentées
+
+apt-get install proftpd (sudo ou en su-)
+
+adduser nomvoulu --shell /bin/false --home /home/nomvoulu (--shell /bin/false empêche l’utilisateur de se
+connecter sur le shell, obligatoire pour un serveur FTP, et –home /home/nomvoulu indique le chemin
+d’accès de base de l’utilisateur en question)
+
+nano /etc/proftpd/proftpd.conf et changer :
+
+UseIPv6 on → off (apparemment ça peut poser problème de le laisser en « on », cependant si on veut
+permettre à des machines utilisant l’IPv6 de se connecter il faut le laisser en on)
+DefaultRoot ~ (bloque l’utilisateur qui se connecte dans ses dossiers, afin qu’il n’accède pas à ceux d’un
+autre utilisateur, attention à bien mettre l’espace entre Root et ~)
+RequireValidShell off (permet de se connecter sans avoir de session valide, mode incognito, attention à
+bien mettre l’espace entre Shell et off)
+Port 21
+Décommenter toute la partie « Anonymous » (à part les double #, et uniquement si on veut autoriser la
+connexion anonyme)
+Include /etc/proftpd/tls.conf
+
+Créer une clé et un certificat :
+
+apt install openssl
+mkdir /etc/proftpd/ssl
+openssl req -new -x509 -keyout /etc/proftpd/ssl/proftpd.key.pem -days 365 -nodes -out
+/etc/proftpd/ssl/proftpd.cert.pem
+Entrer les infos que l’on veut donner, rien n’est obligatoire.
+
+nano /etc/proftpd/tls.conf et changer :
+
+<IfModule mod_tls.c>
+TLSEngine on
+TLSLog /var/log/proftpd/tls.log
+TLSProtocol SSLv23
+*TLSRSACertificateFile /etc/proftpd/ssl/proftpd.cert.pem (! changer avec le chemin où l’on a créé le
+certificat)
+TLSRSACertificateKeyFile /etc/proftpd/ssl/proftpd.key.pem (! changer avec le chemin où l’on a créé la
+clé)
+TLSVerifyClient off
+TLSRequired on
+*il y a deux lignes commençant par TLSRSACertificateFile, ne modifier que la première, celle qui se
+trouve au dessus de TLSRSACertificateKeyFile
+
+apt install proftpd-mod-crypto puis nano /etc/proftpd/modules.conf et changer :
+
+Dé commenter LoadModule mod_tls.c
+
+
+Dans Filezilla (ou autre) :
+
+IP du serv + nom de la session voulue + mdp de la session (ne rien mettre dans nom et mdp si on veut se
+connecter anonymement) → dire ok au certificat.
+Ne pas spécifier le port ni le type de connexion, il le fait automatiquement.

@@ -1,0 +1,57 @@
+Supprimer un serveur FTP avec SSL/TLS sous Proftpd :
+
+Assurez-vous d'exécuter ce script avec des privilèges administratifs, par exemple en utilisant la commande "SUDO" 
+
+
+
+1) ON ARRETE LE SERVEUR_FTP EN UTILISANT LA COMMANDE :
+service proftpd stop
+
+2) ON DéSACTIVE LE REDéMARRAGE AUTOMATIQUE DU SEVEUR_FTP AU DéMARRAGE DU SYSTèME EN UTILISANT LA COMMANDE :
+systemctl disable proftpd
+
+3) ON SUPPRIME LE SERVEUR_FTP ET SES DéPENDANCES EN UTILISANT LA COMMANDE :
+apt-get purge proftpd-basic
+
+4) ON SUPPRIME LES FICHIERS DE CONFIGURATION DU SERVEUR_FTP EN UTILISANT LA COMMANDE :
+rm -rf /etc/proftpd
+
+5) ON SUPPRIME LES CERTIFICATS SSL/TLS UTILISéS PAR PROFTPD EN UTILISANT LA COMMANDE :
+rm -rf /etc/ssl/private/proftpd*
+
+6) ON RéACTIVE LES SYSTèMES PERTINENTS (ex : serveur ssh) EN UTILSANT LES COMMANDES :
+systemctl enable ssh
+service ssh start
+
+Le service SSH est essentiel pour permettre les connexions sécurisées à distance via le protocole SSH.
+Lorsque vous désinstallez le serveur FTP, il est possible que le service SSH soit arrêté ou désactivé
+car il peut y avoir des conflits ou des configurations spécifiques liées au serveur FTP.
+
+
+
+
+POUR VéRIFIER SI PROFTPD EST BIEN DéSISTALLER ON PEUT EFFECTUER LES éTAPES SUIVANTES :
+
+1.Vérification du statut du serveur_FTP
+On utilise la commande suivante pour vérifier le status de Proftpd :
+systemctl status proftpd
+Si ProFTPD est désinstallé avec succès, vous devriez voir un message indiquant que le service n'est pas trouvé ou qu'il n'est pas activé.
+
+
+
+2.Vérification des fichiers de configuration
+On utilise la commande suivante pour vérifier si les fichiers de configuration de ProFTPD existent toujours :
+ls /etc/proftpd
+Si ProFTPD est désinstallé correctement, vous ne devriez pas voir de fichiers ou de répertoires liés à ProFTPD dans la sortie de cette commande.
+
+
+
+3.Vérification des dépendances
+On utilise la commande suivante pour vérifier si le paquet ProFTPD est installé ou non :
+dpkg -l proftpd-basic
+Si le paquet est désinstallé, vous ne verrez aucune sortie correspondante.
+
+
+
+Ces étapes nous permettent de vérifier si ProFTPD a été désinstallé correctement de notre machine Debian.
+Si toutes les vérifications indiquent que ProFTPD n'est plus présent, on peut être sûr que le serveur FTP ProFTPD a été désinstallé avec succès. 

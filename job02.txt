@@ -1,0 +1,26 @@
+ Installez ProFTPd sur votre système  de Virtual monitor 
+
+
+Connexion à votre système de Virtual monitor : Utilisez un client SSH pour vous connecter à votre système de Virtual monitor. Assurez-vous d'avoir les informations d'identification appropriées.
+
+Mise à jour du système : Avant d'installer de nouveaux logiciels, il est toujours bon de mettre à jour les paquets système existants. Utilisez les commandes suivantes pour mettre à jour votre système :
+
+sql code
+sudo apt update
+sudo apt upgrade
+Installation de ProFTPd : Utilisez la commande suivante pour installer ProFTPd :
+
+ code
+sudo apt install proftpd
+Configuration de ProFTPd : Une fois l'installation terminée, vous devez configurer ProFTPd pour qu'il réponde à vos besoins spécifiques. Le fichier de configuration principal de ProFTPd se trouve généralement dans /etc/proftpd/proftpd.conf. Vous pouvez l'ouvrir à l'aide d'un éditeur de texte, tel que Nano :
+
+bash
+ code
+sudo nano /etc/proftpd/proftpd.conf
+Dans ce fichier, vous pouvez spécifier les paramètres de configuration tels que les répertoires racines, les utilisateurs autorisés, les autorisations de fichiers, etc. Consultez la documentation de ProFTPd pour plus de détails sur les options de configuration disponibles.
+
+Redémarrage de ProFTPd : Une fois que vous avez terminé la configuration, redémarrez le service ProFTPd pour appliquer les modifications :
+
+ code
+sudo service proftpd restart
+Ces étapes devraient vous aider à installer et à configurer ProFTPd 

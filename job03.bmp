@@ -1,0 +1,21 @@
+Ouvrez une session sur votre système de Virtual monitor en utilisant un client SSH.
+
+Ajoutez l'utilisateur "Merry" avec le mot de passe "kalimac" en utilisant la commande suivante :
+
+bash
+ code
+sudo useradd -m -s /bin/bash Merry
+sudo passwd Merry
+on est invité à entrer le mot de passe pour l'utilisateur "Merry". Entrez "kalimac".
+Vous serez invité à confirmer le mot de passe. Retapez "kalimac".
+Résultat attendu : L'utilisateur "Merry" est ajouté avec succès.
+
+Ajoutez l'utilisateur "Pippin" avec le mot de passe "secondbreakfast" en utilisant la commande suivante :
+
+bash
+Copy code
+sudo useradd -m -s /bin/bash Pippin
+sudo passwd Pippin
+on est invité à entrer le mot de passe pour l'utilisateur "Pippin". Entrez "secondbreakfast".
+on est invité à confirmer le mot de passe. Retapez "secondbreakfast".
+Résultat attendu : L'utilisateur "Pippin" est ajouté avec succès.
